@@ -1,0 +1,206 @@
+body{
+    margin: 0px;
+    padding: 0px;
+}
+
+
+@media screen and (max-width:768px){
+    div.col-12{
+            text-align:center;
+            float:left;
+            font-size:15px;
+            width:100%;
+            padding:15px;
+        }
+    }
+}    
+    
+
+
+
+.content{
+    width:100%;
+    overflow:hidden;
+}
+
+/* First section background */
+
+.section1{
+    height: 100vh;
+    width: 100%;
+    background-image:url("../images/background.svg");
+    background-size:cover;
+}
+
+/* Second and Third section background */
+
+.section2,.section3{
+    background-image:url("../images/background.svg");
+    background-size:cover;
+}
+
+/* Headings for the three sections*/
+
+.heading{
+    color:black;
+    font-size:40px;
+    text-align:center;
+    padding:60px;
+    padding-top:70px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.row:after{
+    display:table;
+    content: "";
+    clear: both;
+}
+
+a{
+    color:black;
+    text-decoration:none;
+}
+
+a:hover{
+    color:black;
+}
+
+input[type=text], select {
+    width: 25%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 5px solid #ffe699;
+    border-radius: 15px;
+    box-sizing: border-box;
+    }
+
+/*Classes inside the field boxes*/
+.field{         
+    border : 2px solid yellow;
+    border-radius : 10px;
+    outline: none;
+    padding : 5px;
+    min-width : 20%;            
+    text-align:center;
+    color:black;
+    font-size:16px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.cover {
+    margin : 10px 0 10px 0;
+}
+
+.newfield{
+    text-align:center;
+    color:black;
+    padding:0px;
+    font-size:15.5px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+
+.dscvit{
+    padding-top:60px;
+    padding-bottom:80px;
+    
+}
+
+.dsclabel{
+    color:rgb(105, 104, 104);
+    font-size:25px;
+   text-align:left;
+   padding:0px;
+    margin-top:2px;
+    
+
+}
+
+.logo{
+    text-align:right;
+    padding:0px;
+    margin:0px;
+    
+    
+}
+
+.sclabel{
+    font-size:22px;
+    text-align:left;
+    padding:0px;
+    margin-top:2px;
+    
+}
+
+
+.snapchat{
+    float:right;
+    text-align:left;
+    padding-top:60px;
+    padding-bottom:80px;
+    
+}
+
+input[type=password], select {
+    width: 25%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 5px solid #ffe699;
+    border-radius: 15px;
+    box-sizing: border-box;
+    }
+
+    input[type=submit], select {
+        width: 27%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border-radius: 15px;
+        box-sizing: border-box;
+        background-color: #ffe699;
+        border: 0px;
+        }
+
+    
+
+    .col-12{
+        text-align:center;
+        float:left;
+        font-size:15px;
+        width:100%;
+        padding:15px;
+    }
+
+/*Description field*/
+    textarea, select{
+        width: 40%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border-radius: 10px;
+        box-sizing: border-box;
+        border: 5px solid #ffe699;
+    }
+
+    input[type=button], select {
+        width: 20%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border-radius: 15px;
+        box-sizing: border-box;
+        border: 5px solid #ffe699;
+        background-color:#FFFDE7;
+        }
+
+        input[type=textarea], select {
+            width: 30%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border-radius: 20px;
+            box-sizing: border-box;
+            background-color: solid #ffe699;
+            }
