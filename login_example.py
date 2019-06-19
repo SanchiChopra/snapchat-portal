@@ -14,18 +14,24 @@ mongo = PyMongo(app)
 def index():
     if 'username' in session:
         return 'You are logged in as ' + session['username']
-
     return render_template('index.html')
+
+@app.route('/logout')
+def logout():
+    if 'username' in session:
+        session.pop('username')
+    return redirect(url_for('index'))
 
 @app.route('/login', methods=['POST'])
 def login():
+    print("inside /login")
     users = mongo.db.users
     login_user = users.find_one({'name' : request.form['username']})
-
+    print(login_user)
     if login_user:
         if bcrypt.hashpw(request.form['pass'].encode('utf-8'), login_user['password'].encode('utf-8')) == login_user['password'].encode('utf-8'):
             session['username'] = request.form['username']
-            return redirect(url_for('index'))
+            return "confirm login"
 
     return 'Invalid username/password combination'
 
