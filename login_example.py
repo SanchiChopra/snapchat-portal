@@ -1,4 +1,3 @@
-''' login register '''
 
 from flask import Flask, render_template, url_for, request, session, redirect
 from flask_pymongo import PyMongo
@@ -6,7 +5,7 @@ import bcrypt
 
 app = Flask(__name__)
 
-app.config['MONGO_DBNAME'] = 'student_db'
+app.config['MONGO_DBNAME'] = 'test'
 app.config['MONGO_URI'] = 'mongodb+srv://test:test@cluster0-mlywv.mongodb.net/test?retryWrites=true&w=majority'
 
 mongo = PyMongo(app)
