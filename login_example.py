@@ -1,11 +1,11 @@
 
-from flask import Flask, render_template, url_for, request, session, redirect
+from flask import Flask, render_template, url_for, request, session, redirect, flash
 from flask_pymongo import PyMongo
 import bcrypt
 
 app = Flask(__name__)
 
-app.config['MONGO_DBNAME'] = 'test'
+app.config['MONGO_DBNAME'] = 'student_db'
 app.config['MONGO_URI'] = 'mongodb+srv://test:test@cluster0-mlywv.mongodb.net/test?retryWrites=true&w=majority'
 
 mongo = PyMongo(app)
@@ -20,20 +20,40 @@ def index():
 def logout():
     if 'username' in session:
         session.pop('username')
-    return redirect(url_for('index'))
+        return "Logged out"
+    return redirect({{ url_for('index') }})
 
 @app.route('/login', methods=['POST'])
 def login():
-    print("inside /login")
-    users = mongo.db.users
-    login_user = users.find_one({'name' : request.form['username']})
-    print(login_user)
-    if login_user:
-        if bcrypt.hashpw(request.form['pass'].encode('utf-8'), login_user['password']) == login_user['password']:
-            session['username'] = request.form['username']
-            return "confirm login"
+    error = ''
+    try:
+        if request.method=="POST":
+            users = mongo.db.users
+            attempted_username = request.form['username']
+            attempted_password = request.form['pass']
+            #flash(attempted_username)
+            #flash(attempted_password)
+            login_user = users.find_one({'name' : request.form['username']})
+            if login_user:
+                if bcrypt.hashpw(request.form['pass'].encode('utf-8'), login_user['password']) == login_user['password']:
+                    session['username'] = request.form['username']
+                    return redirect(url_for('dashboard'))
+                else:
+                    "Invalid password! Try again."
 
-    return 'Invalid username/password combination'
+            return 'Invalid username/password combination'
+        return render_template('index.html', error = error)
+
+
+
+    except Exception as e:
+        #flash(e)
+        return render_template("index.html", error = error)
+    
+    
+@app.route('/dashboard', methods=['GET', 'POST'])
+def dashboard():
+    return "You have logged in as " + session['username']
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
@@ -46,6 +66,7 @@ def register():
             users.insert({'name' : request.form['username'], 'password' : hashpass})
             session['username'] = request.form['username']
             return redirect(url_for('index'))
+
         return 'That username already exists!'
 
     return render_template('index2.html')

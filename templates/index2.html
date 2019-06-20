@@ -43,7 +43,7 @@
                     <div class="container-fluid">
                         <div class="row" style="text-align:center">
                             <div class="col-12">
-                                <form method=POST action="{{ url_for('register') }}">
+                                <form action="{{ url_for('register') }}" method="POST">
                                     <div class="cover">
                                     <input class="field  input-width" type="text" placeholder="Username" name="username" maxlength="30" required>
                                     </div>
@@ -57,11 +57,11 @@
                                         <input class="field  input-width" type="password" placeholder="Confirm Password" name="password" maxlength="30" required>
                                     </div> -->
                                     <div class="cover">
-                                        <input type="button" class="field  input-width" value="Register">
+                                        <input type="submit" class="field  input-width" value="Register">
                                     </div>
                             </div>
                             <div class="col-12">
-                                <a href="index.html"><b><u>Already have an account? Login</u></b></a>
+                                <a href="{{ url_for('login') }}"><b><u>Already have an account? Login</u></b></a>
                             </div>
                             <div class="container ">
                                     <div class="row">
@@ -69,7 +69,7 @@
                                                 <div class="container ">
                                                     <div class="row">
                                                             <div class="col-lg-8 col-md-8 col-sm-6 col-xs-3 logo">
-                                                                <img src="images/dsc-logo.jpeg">
+                                                                <img src="{{ url_for('static', filename='images/dsc-logo.jpeg') }}">
                                                             </div>
                                                             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 dsclabel">
                                                                 DSC <b>VIT</b>
@@ -81,7 +81,7 @@
                                                 <div class="container">
                                                     <div class="row">
                                                         <div class="col-md-3 col-sm-3 col-xs-3 logo logo">
-                                                            <img src="images/sc-logo.jpg">
+                                                            <img src="{{ url_for('static', filename='images/sc-logo.jpg') }}">
                                                         </div>
                                                         <div class="col-md-6 col-sm-6 col-xs-6 sclabel">
                                                             <b>Snapchat</b>
