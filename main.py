@@ -13,8 +13,8 @@ import os
 from flask_google_recaptcha import GoogleReCaptcha
 
 RECAPTCHA_ENABLED = True
-RECAPTCHA_SITE_KEY = "6LedCasUAAAAAMwT3VYR39FQvwcw2zeKO5UiW2IS"
-RECAPTCHA_SECRET_KEY = "6LedCasUAAAAALjdpAsH0Wa3ow8Sn32g-VcqW_mC"
+RECAPTCHA_SITE_KEY = os.environ.get('RECAPTCHA_SITE_KEY')
+RECAPTCHA_SECRET_KEY = os.environ.get('RECAPTCHA_SECRET_KEY')
 RECAPTCHA_THEME = "dark"
 RECAPTCHA_TYPE = "image"
 RECAPTCHA_SIZE = "compact"
@@ -22,22 +22,22 @@ RECAPTCHA_RTABINDEX = 10
 
 try:
     import env
-    secret = env.secret
-    db_link = env.db_link
+    secret = os.environ.get('SECRET')
+    db_link = os.environ.get('DB_LINK')
 
 except:
-    db_link = os.environ('db_link')
-    secret = os.environ('secret')
+    db_link = os.environ.get('DB_LINK')
+    secret = os.environ.get('SECRET')
 
 app = Flask(__name__)
 recaptcha = GoogleReCaptcha(app=app)
 import secret_key
 
-app.config['JWT_SECRET_KEY'] = secret_key.seckey  
+app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY')
 app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
-app.config['MONGO_URI'] = db_link
-app.config['MONGO_DBNAME'] = 'student_db'
+app.config['MONGO_URI'] = os.environ.get('DB_LINK')
+app.config['MONGO_DBNAME'] = os.environ.get('DB_NAME') 
 
 
 mongo = PyMongo(app)
