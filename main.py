@@ -1,4 +1,3 @@
-
 from flask import Flask, jsonify, request, json, session, render_template, redirect, url_for
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
@@ -173,6 +172,15 @@ def logout2():
 @jwt_required
 def protected():
     return jsonify({'hello': 'world'})
+
+@app.route('/upload', methods = ['POST'])
+def upload():
+    if 'filter' in request.files:
+        filter = request.files['filter']
+        mongo.save_file(filter.filename, filter)
+        mongo.db.users.insert({'username': request.form.get('username'), 'uploaded_filter_name' : filter.filename})
+
+    return 'Filter uploaded'
 
 #<script src="https://www.google.com/recaptcha/api.js?render=6LedCasUAAAAAMwT3VYR39FQvwcw2zeKO5UiW2IS"></script>
 @app.route("/submit", methods=["POST"])
