@@ -37,6 +37,7 @@ recaptcha = GoogleReCaptcha(app=app)
 uploads_dir = os.path.join(app.instance_path,'uploads')
 os.makedirs(uploads_dir,0o777,exist_ok=True)
 
+
 app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY')
 app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
@@ -48,7 +49,7 @@ mongo = PyMongo(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
-ALLOWED_FILES = ['png']
+REQ_FILE_TYPE = ['png']
 
 blacklist = set()
 
@@ -133,19 +134,6 @@ def login():
     return jsonify(result)
 	
 
-# @app.route('/login', methods=['POST'])
-# def login():
-#     username = request.json.get('username', 'test')
-#     password = request.json.get('password', 'test')
-#     if username != 'test' or password != 'test':
-#         return jsonify({"msg": "Bad username or password"}), 401
-
-#     ret = {
-#         'access_token': create_access_token(identity=username),
-#         'refresh_token': create_refresh_token(identity=username)
-#     }
-#     return jsonify(ret), 200
-
 @app.route('/refresh', methods=['POST'])
 @jwt_refresh_token_required
 def refresh():
@@ -181,6 +169,7 @@ def protected():
     return jsonify({'hello': 'world'})
 
 
+#To allow a logged-in user to upload a valid '.png' file
 @app.route('/upload', methods=["POST"])
 def upload():
 
@@ -197,7 +186,7 @@ def upload():
         filename = File.filename
         filename = filename.split('.')
 
-        if(filename[-1].lower() in ALLOWED_FILES):
+        if(filename[-1].lower() in REQ_FILE_TYPE):
 
             content = File.read()
             records = pyexcel.iget_records(file_type=filename[-1], file_content=content)
@@ -210,7 +199,7 @@ def upload():
             
         else:
 
-            return jsonify({"Error":"True", "ErrorType":"WrongExtension", "message":"Only files with extension .csv, .xls, .xlsx are allowed"})
+            return jsonify({"Error":"True", "ErrorType":"WrongExtension", "message":"Please upload a '.png' file"})
 
 
 
