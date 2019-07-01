@@ -188,11 +188,14 @@ def upload():
 
         if(filename[-1].lower() in REQ_FILE_TYPE):
 
-            content = File.read()
-            records = pyexcel.iget_records(file_type=filename[-1], file_content=content)
-            for record in records:
-                detail= {"Username":record["Username"], "Password":record["Password"], "Age":record["Age"], "Gender":record["Gender"]}
-                FileDetails.insert_one(detail)
+            File = request.files['UploadFile']
+            mongo.save_file(File.filename, File)
+
+            # content = File.read()
+            # records = pyexcel.iget_records(file_type=filename[-1], file_content=content)
+            # for record in records:
+            #     detail= {"Username":record["Username"], "Password":record["Password"]}
+            FileDetails.insert_one({'username': request.form.get('username'), 'uploaded_filter_name' : File.filename, 'uploaded_filter' : File})
             File.seek(0)
             File.save(os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(File.filename)))
             return jsonify({"Error":"False", "ErrorType":"None", "message":"All records have been stored successfully on the database"})
