@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, json, session, render_template, redirect, url_for
+from flask import Flask, jsonify, request, json, session, render_template, redirect, url_for, send_file
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from datetime import datetime
@@ -8,7 +8,9 @@ from flask_jwt_extended import JWTManager
 from flask_jwt_extended import (create_access_token, create_refresh_token,JWTManager, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
 from flask_login import logout_user, LoginManager
 import flask_login
+from werkzeug.utils import secure_filename
 import os
+import pyexcel
 from flask_google_recaptcha import GoogleReCaptcha
 
 RECAPTCHA_ENABLED = True
@@ -30,7 +32,10 @@ except:
 
 app = Flask(__name__)
 recaptcha = GoogleReCaptcha(app=app)
-import secret_key
+
+
+uploads_dir = os.path.join(app.instance_path,'uploads')
+os.makedirs(uploads_dir,0o777,exist_ok=True)
 
 app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY')
 app.config['JWT_BLACKLIST_ENABLED'] = True
@@ -42,6 +47,8 @@ app.config['MONGO_DBNAME'] = os.environ.get('DB_NAME')
 mongo = PyMongo(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
+
+ALLOWED_FILES = ['png']
 
 blacklist = set()
 
@@ -173,14 +180,48 @@ def logout2():
 def protected():
     return jsonify({'hello': 'world'})
 
-@app.route('/upload', methods = ['POST'])
-def upload():
-    if 'filter' in request.files:
-        filter = request.files['filter']
-        mongo.save_file(filter.filename, filter)
-        mongo.db.users.insert({'username': request.form.get('username'), 'uploaded_filter_name' : filter.filename})
 
-    return 'Filter uploaded'
+@app.route('/upload', methods=["POST"])
+def upload():
+
+    if (request.method =="POST"):
+
+        
+        FileDetails = mongo.db.FileDetails
+        File = request.files['UploadFile']
+        
+        
+        if not File:
+            return jsonify({"Error":"True", "ErrorType":"NoFile", "message":"File not uploaded!"})
+
+        filename = File.filename
+        filename = filename.split('.')
+
+        if(filename[-1].lower() in ALLOWED_FILES):
+
+            content = File.read()
+            records = pyexcel.iget_records(file_type=filename[-1], file_content=content)
+            for record in records:
+                detail= {"Username":record["Username"], "Password":record["Password"], "Age":record["Age"], "Gender":record["Gender"]}
+                FileDetails.insert_one(detail)
+            File.seek(0)
+            File.save(os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(File.filename)))
+            return jsonify({"Error":"False", "ErrorType":"None", "message":"All records have been stored successfully on the database"})
+            
+        else:
+
+            return jsonify({"Error":"True", "ErrorType":"WrongExtension", "message":"Only files with extension .csv, .xls, .xlsx are allowed"})
+
+
+
+# @app.route('/upload', methods = ['POST'])
+# def upload():
+#     if 'filter' in request.files:
+#         filter = request.files['filter']
+#         mongo.save_file(filter.filename, filter)
+#         mongo.db.users.insert({'username': request.form.get('username'), 'uploaded_filter_name' : filter.filename})
+
+#     return 'Filter uploaded'
 
 #<script src="https://www.google.com/recaptcha/api.js?render=6LedCasUAAAAAMwT3VYR39FQvwcw2zeKO5UiW2IS"></script>
 @app.route("/submit", methods=["POST"])
