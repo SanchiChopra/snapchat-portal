@@ -21,16 +21,17 @@ RECAPTCHA_TYPE = "image"
 RECAPTCHA_SIZE = "compact"
 RECAPTCHA_RTABINDEX = 10
 
-try:
-    import env
-    secret = os.environ.get('SECRET')
-    db_link = os.environ.get('DB_LINK')
-
-except:
-    db_link = os.environ.get('DB_LINK')
-    secret = os.environ.get('SECRET')
 
 app = Flask(__name__)
+
+try:
+    secret = os.environ.get('SECRET')
+    app.config['MONGO_URI'] = "mongodb+srv://test:test@cluster0-y1b2f.mongodb.net/test?retryWrites=true&w=majority"
+
+except:
+    db_link = os.environ.get('MONGO_URI')
+    secret = os.environ.get('SECRET')
+
 recaptcha = GoogleReCaptcha(app=app)
 
 
@@ -41,7 +42,7 @@ os.makedirs(uploads_dir,0o777,exist_ok=True)
 app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY')
 app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
-app.config['MONGO_URI'] = os.environ.get('DB_LINK')
+# app.config['MONGO_URI'] = os.environ.get('MONGO_URI')
 app.config['MONGO_DBNAME'] = os.environ.get('DB_NAME') 
 
 
@@ -170,46 +171,62 @@ def protected():
 
 
 #To allow a logged-in user to upload a valid '.png' file
-@app.route('/upload', methods=["POST"])
-def upload():
-
-    if (request.method =="POST"):
-
-        
-        FileDetails = mongo.db.FileDetails
-        File = request.files['UploadFile']
-        
-        
-        if not File:
-            return jsonify({"Error":"True", "ErrorType":"NoFile", "message":"File not uploaded!"})
-
-        filename = File.filename
-        filename = filename.split('.')
-
-        if(filename[-1].lower() in REQ_FILE_TYPE):
-
-            File = request.files['UploadFile']
-            mongo.save_file(File.filename, File)
-
-            FileDetails.insert_one({'username': request.form.get('username'), 'uploaded_filter_name' : File.filename, 'uploaded_filter' : File})
-            File.seek(0)
-            File.save(os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(File.filename)))
-            return jsonify({"Error":"False", "ErrorType":"None", "message":"All records have been stored successfully on the database"})
-            
-        else:
-
-            return jsonify({"Error":"True", "ErrorType":"WrongExtension", "message":"Please upload a '.png' file"})
-
-
-
-# @app.route('/upload', methods = ['POST'])
+# @app.route('/upload', methods=["POST"])
 # def upload():
-#     if 'filter' in request.files:
-#         filter = request.files['filter']
-#         mongo.save_file(filter.filename, filter)
-#         mongo.db.users.insert({'username': request.form.get('username'), 'uploaded_filter_name' : filter.filename})
 
-#     return 'Filter uploaded'
+#     if (request.method =="POST"):
+
+        
+#         FileDetails = mongo.db.FileDetails
+#         File = request.files['UploadFile']
+        
+        
+#         if not File:
+#             return jsonify({"Error":"True", "ErrorType":"NoFile", "message":"File not uploaded!"})
+
+#         filename = File.filename
+#         filename = filename.split('.')
+
+#         if(filename[-1].lower() in REQ_FILE_TYPE):
+
+#             File = request.files['UploadFile']
+#             mongo.save_file(File.filename, File)
+
+#             FileDetails.insert_one({'username': request.form.get('email'), 'uploaded_filter_name' : File.filename, 'uploaded_filter' : File})
+#             File.seek(0)
+#             File.save(os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(File.filename)))
+#             return jsonify({"Error":"False", "ErrorType":"None", "message":"All records have been stored successfully on the database"})
+            
+#         else:
+
+#             return jsonify({"Error":"True", "ErrorType":"WrongExtension", "message":"Please upload a '.png' file"})
+
+
+
+@app.route('/upload', methods = ['POST'])
+def upload():
+    if 'filter' in request.files:
+        filter = request.files['filter']
+        mongo.save_file(filter.filename, filter)
+        mongo.db.users.insert({'username': request.form.get('email'), 'uploaded_filter_name' : filter.filename})
+
+    return 'Filter uploaded'
+
+
+@app.route('/file/<filename>')
+def file(filename):
+    return mongo.send_file(filename)
+
+
+@app.route('/filtersub/<username>')
+def filtersub(username):
+    user = mongo.db.users.find_one_or_404({ 'username' : username})
+    return f'''
+        <h1> {username} </h1>
+        <img src = "{url_for('file', filename = user['uploaded_filter_name'])}">
+    '''
+
+
 
 #<script src="https://www.google.com/recaptcha/api.js?render=6LedCasUAAAAAMwT3VYR39FQvwcw2zeKO5UiW2IS"></script>
 @app.route("/submit", methods=["POST"])
@@ -221,6 +238,7 @@ def submit():
         pass
     else:
         # FAILED
+        print("failed")
         pass
 
 
