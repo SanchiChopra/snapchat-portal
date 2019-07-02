@@ -8,10 +8,15 @@ from flask_jwt_extended import JWTManager
 from flask_jwt_extended import (create_access_token, create_refresh_token,JWTManager, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
 from flask_login import logout_user, LoginManager
 import flask_login
+from flask_wtf import FlaskForm, RecaptchaField
+from wtforms import StringField, PasswordField
+from wtforms.validators import InputRequired, Length, AnyOf
 from werkzeug.utils import secure_filename
 import os
-import pyexcel
 from flask_google_recaptcha import GoogleReCaptcha
+
+
+app = Flask(__name__)
 
 RECAPTCHA_ENABLED = True
 RECAPTCHA_SITE_KEY = os.environ.get('RECAPTCHA_SITE_KEY')
@@ -21,8 +26,7 @@ RECAPTCHA_TYPE = "image"
 RECAPTCHA_SIZE = "compact"
 RECAPTCHA_RTABINDEX = 10
 
-
-app = Flask(__name__)
+recaptcha = RecaptchaField()
 
 try:
     secret = os.environ.get('SECRET')
@@ -44,6 +48,7 @@ app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 # app.config['MONGO_URI'] = os.environ.get('MONGO_URI')
 app.config['MONGO_DBNAME'] = os.environ.get('DB_NAME') 
+app.config['TESTING'] = False
 
 
 mongo = PyMongo(app)
@@ -227,19 +232,18 @@ def filtersub(username):
     '''
 
 
-
 #<script src="https://www.google.com/recaptcha/api.js?render=6LedCasUAAAAAMwT3VYR39FQvwcw2zeKO5UiW2IS"></script>
 @app.route("/submit", methods=["POST"])
 def submit():
 
     if recaptcha.verify():
         # SUCCESS
-        print("done")
-        pass
+        return "done"
+        #pass
     else:
         # FAILED
-        print("failed")
-        pass
+        return "failed"
+        # pass
 
 
 if __name__ == '__main__':
@@ -249,7 +253,7 @@ if __name__ == '__main__':
 #authorization header for other routes, type = bearer token and rest is body
 # UPLOAD:
 
-            # content = File.read()
+            # content_of_filter = File.read()
             # records = pyexcel.iget_records(file_type=filename[-1], file_content=content)
             # for record in records:
-            #     detail= {"Username":record["Username"], "Password":record["Password"]}
+            #     detailing= {"Username":record["Username"], "Password":record["Password"]}
