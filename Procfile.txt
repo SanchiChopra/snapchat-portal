@@ -1,1 +1,1 @@
-web: gunicorn snapchat-portal-master:main
+web: gunicorn main:main
