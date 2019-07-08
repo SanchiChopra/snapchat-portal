@@ -1,1 +1,1 @@
-web: gunicorn snapchat-portal:app
+web: gunicorn run:app
