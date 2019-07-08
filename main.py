@@ -101,7 +101,7 @@ def register():
     return jsonify({
         "status": 200,
         "message": new_user['email'] + ' registered'})
-    # return jsonify({'test': 'test'})
+    
 
 
 @app.route('/login', methods=['POST'])
