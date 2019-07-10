@@ -109,9 +109,8 @@ def register():
 def login():
     users = mongo.db.users
     data = request.get_json()
-    data.sort()
-    email = data['email']
-    password = data['password']
+    email = data["email"]
+    password = data["password"]
     result = ""
 	
     response = users.find_one({'email' : email})
