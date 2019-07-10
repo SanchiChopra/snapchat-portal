@@ -105,7 +105,7 @@ def register():
     
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/', methods=['POST'])
 def login():
     users = mongo.db.users
     data = request.get_json()
