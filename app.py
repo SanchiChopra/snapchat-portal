@@ -83,25 +83,25 @@ def register():
         }
         user_id = users.insert_one(new_user)
 
-        access_token = create_access_token(identity = new_user['name'])
-        refresh_token = create_refresh_token(identity = new_user['name'])
+        access_token = create_access_token(identity = new_user["name"])
+        refresh_token = create_refresh_token(identity = new_user["name"])
         print(access_token, refresh_token)
         return jsonify({
-                'message': 'User {} was created'.format(new_user['name']),
-                'access_token': access_token,
-                'refresh_token': refresh_token
+                "message": "User {} was created".format(new_user["name"]),
+                "access_token": access_token,
+                "refresh_token": refresh_token
                 })
 
     except:
-        return jsonify({'message': 'Something went wrong', 'status': 500})
+        return jsonify({"message": "Something went wrong", "status": 500})
 
     
 
-    result = {'email' : new_user['email'] + ' registered'}
+    result = {"email" : new_user["email"] + " registered"}
 
     return jsonify({
         "status": 200,
-        "message": new_user['email'] + ' registered'})
+        "message": new_user["email"] + " registered"})
     
 
 
@@ -248,7 +248,12 @@ def submit():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(debug=True)
+
+      
+app.config['ENV'] = 'development'
+
+app.config['TESTING'] = True
 
 
 #authorization header for other routes, type = bearer token and rest is body
