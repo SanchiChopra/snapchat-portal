@@ -109,6 +109,7 @@ def register():
 def login():
     users = mongo.db.users
     data = request.get_json()
+    print(data)
     email = data["email"]
     password = data["password"]
     result = ""
