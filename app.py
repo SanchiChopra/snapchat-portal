@@ -43,6 +43,7 @@ recaptcha = GoogleReCaptcha(app=app)
 uploads_dir = os.path.join(app.instance_path,'uploads')
 os.makedirs(uploads_dir,0o777,exist_ok=True)
 
+APP_URL = "https://snapchatportal.herokuapp.com/"
 
 app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY')
 app.config['JWT_BLACKLIST_ENABLED'] = True
