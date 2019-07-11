@@ -115,8 +115,8 @@ def login():
     # }
     # data = request.get_json()
     
-    email = request.get_json()['email']
-    password = request.get_json()['password']
+    email = request.json()["email"]
+    password = request.json()["password"]
     result = ""
 	
     response = users.find_one({'email' : email})
