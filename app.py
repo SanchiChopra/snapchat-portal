@@ -106,7 +106,7 @@ def register():
     
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/', methods=['POST'])
 def login():
     users = mongo.db.users
 
@@ -274,3 +274,4 @@ app.config['ENV'] = 'development'
             # records = pyexcel.iget_records(file_type=filename[-1], file_content=content)
             # for record in records:
             #     detailing= {"Username":record["Username"], "Password":record["Password"]}
+
