@@ -264,7 +264,7 @@ if __name__ == '__main__':
       
 app.config['ENV'] = 'development'
 
-app.config['TESTING'] = True
+# app.config['TESTING'] = True
 
 
 #authorization header for other routes, type = bearer token and rest is body
