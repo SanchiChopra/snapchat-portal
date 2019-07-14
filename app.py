@@ -106,7 +106,7 @@ def register():
     
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
     users = mongo.db.users
 
@@ -114,11 +114,15 @@ def login():
     #     'email':email,
     #     'password': password
     # }
-    # data = request.get_json()
+    data = request.get_json()
+    print(data)
     
-    email = request.json()["email"]
-    password = request.json()["password"]
+    email = data["email"]
+    password = data["password"]
     result = ""
+
+    print(email)
+    print(password)
 	
     response = users.find_one({'email' : email})
 
