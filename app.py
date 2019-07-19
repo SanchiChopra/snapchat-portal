@@ -8,6 +8,8 @@ from flask_jwt_extended import JWTManager
 from flask_jwt_extended import (create_access_token, create_refresh_token,JWTManager, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
 from flask_login import logout_user, LoginManager
 import flask_login
+import pymongo
+from pymongo import MongoClient
 from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import StringField, PasswordField
 from wtforms.validators import InputRequired, Length, AnyOf
@@ -27,6 +29,8 @@ RECAPTCHA_TYPE = "image"
 RECAPTCHA_SIZE = "compact"
 RECAPTCHA_RTABINDEX = 10
 
+client = MongoClient()
+
 recaptcha = RecaptchaField()
 
 try:
@@ -36,6 +40,11 @@ try:
 except:
     db_link = os.environ.get('MONGO_URI')
     secret = os.environ.get('SECRET')
+
+client = pymongo.MongoClient('5000',
+            ssl=True,
+            ssl_certfile='/path/to/client.pem',
+            ssl_keyfile='/path/to/key.pem' )
 
 recaptcha = GoogleReCaptcha(app=app)
 
