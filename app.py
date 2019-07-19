@@ -106,7 +106,7 @@ def register():
     
 
 
-@app.route('/', methods=['POST'])
+@app.route('/login', methods=['POST'])
 def login():
     users = mongo.db.users
 
@@ -124,7 +124,7 @@ def login():
     print(email)
     print(password)
 	
-    response = users.find_one({'email' : email})
+    response = users.find_one({"email" : email})
 
     if response:	
         if bcrypt.check_password_hash(response['password'], password):
@@ -137,10 +137,15 @@ def login():
                         'message': 'login success'
                     }
             tokens = mongo.db.tokens
-            tokens.insert_one({
-                'token_id' : access_token,
+
+            dict_token = {
+                'token_id' : access_token  
+                }
+
+            dict_email = {
                 'email' : email 
-            })
+                }
+            tokens.insert_one(dict_token, dict_email)
         else:
             result = {'status': 404,
                         'message': 'wrong password'
