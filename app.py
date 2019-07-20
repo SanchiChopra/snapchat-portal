@@ -122,24 +122,24 @@ def index():
     return redirect(url_for('login'))
 
 
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     users = mongo.db.users
 
-    data = request.get_json()
-    print(data)
+    # data = request.json()
+    # print(data)
     
-    email = data['email']
-    password = data['password']
+    email = request.get_json()['email']
+    password = request.get_json()['password']
     result = ""
 
     
-    data = {
-        'email':email,
-        'password': password
-    }
-    print(email)
-    print(password)
+    # data = {
+    #     'email':email,
+    #     'password': password
+    # }
+    # print(email)
+    # print(password)
 	
     response = users.find_one({"email" : email})
 
