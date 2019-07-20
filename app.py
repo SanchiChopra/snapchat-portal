@@ -116,9 +116,9 @@ def register():
     
 
 
-# @app.route('/', methods=['GET'])
-# def initial():
-#     return jsonify(request.get_json(force=True))
+@app.route('/')
+def initial():
+    return redirect(url_for('login'))
 
 
 @app.route('/login', methods=['POST'])
