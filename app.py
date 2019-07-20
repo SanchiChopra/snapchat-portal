@@ -9,6 +9,7 @@ from flask_jwt_extended import (create_access_token, create_refresh_token,JWTMan
 from flask_login import logout_user, LoginManager
 import flask_login
 import pymongo
+import requests
 from pymongo import MongoClient
 from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import StringField, PasswordField
@@ -115,7 +116,12 @@ def register():
     
 
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['POST'])
+def initial():
+    return jsonify(request.get_json(force=True))
+
+
+@app.route('/', methods=['POST'])
 def login():
     users = mongo.db.users
 
