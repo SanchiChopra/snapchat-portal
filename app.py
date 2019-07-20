@@ -169,7 +169,7 @@ def login():
         result = {'status': 404,
                         'message': 'user not registered'
             }
-    return jsonify(result, request.get_json(force=True))
+    return jsonify(result, request.get_json(force=True), content_type='application/json')
 	
 
 @app.route('/refresh', methods=['POST'])
