@@ -42,9 +42,9 @@ except:
     secret = os.environ.get('SECRET')
 
 client = pymongo.MongoClient('5000',
-            ssl=True,
-            ssl_certfile='/path/to/client.pem',
-            ssl_keyfile='/path/to/key.pem' )
+            ssl=True)
+            # ssl_certfile='/path/to/client.pem',
+            # ssl_keyfile='/path/to/key.pem' )
 
 recaptcha = GoogleReCaptcha(app=app)
 
@@ -115,7 +115,7 @@ def register():
     
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/', methods=['POST'])
 def login():
     users = mongo.db.users
 
