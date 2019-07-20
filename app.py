@@ -117,25 +117,27 @@ def register():
 
 
 @app.route('/')
-def initial():
+def index():
+    # return "paaasss"
     return redirect(url_for('login'))
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET'])
 def login():
     users = mongo.db.users
 
-    # data = {
-    #     'email':email,
-    #     'password': password
-    # }
     data = request.get_json()
     print(data)
     
-    email = data["email"]
-    password = data["password"]
+    email = data['email']
+    password = data['password']
     result = ""
 
+    
+    data = {
+        'email':email,
+        'password': password
+    }
     print(email)
     print(password)
 	
