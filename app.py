@@ -121,7 +121,7 @@ def register():
 #     return jsonify(request.get_json(force=True))
 
 
-@app.route('/', methods=['GET'])
+@app.route('/login', methods=['POST'])
 def login():
     users = mongo.db.users
 
@@ -169,7 +169,7 @@ def login():
         result = {'status': 404,
                         'message': 'user not registered'
             }
-    return jsonify(result, request.get_json(force=True), content_type='application/json')
+    return jsonify(result)
 	
 
 @app.route('/refresh', methods=['POST'])
