@@ -121,7 +121,7 @@ def initial():
     return jsonify(request.get_json(force=True))
 
 
-@app.route('/', methods=['POST'])
+@app.route('/login', methods=['POST'])
 def login():
     users = mongo.db.users
 
