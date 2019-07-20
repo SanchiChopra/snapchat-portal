@@ -115,7 +115,7 @@ def register():
     
 
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['GET'])
 def login():
     users = mongo.db.users
 
