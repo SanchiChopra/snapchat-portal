@@ -116,7 +116,7 @@ def register():
     
 
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['GET'])
 def initial():
     return jsonify(request.get_json(force=True))
 
