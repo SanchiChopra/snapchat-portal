@@ -128,7 +128,8 @@ def login():
 
     # data = request.json()
     # print(data)
-    
+    print(request.data)
+
     email = request.get_json()['email']
     password = request.get_json()['password']
     result = ""
