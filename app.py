@@ -17,36 +17,36 @@ from wtforms.validators import InputRequired, Length, AnyOf
 from werkzeug.utils import secure_filename
 import os
 from flask_google_recaptcha import GoogleReCaptcha
-from flasgger import Swagger, LazyString, LazyJSONEncoder
-from flasgger.utils import swag_from
+# from flasgger import Swagger, LazyString, LazyJSONEncoder
+# from flasgger.utils import swag_from
 
 # port = int(os.environ.get('PORT', 5000))
 
 app = Flask(__name__)
-app.config["Swagger"] = {"title": "Swagger-UI", "uiversion": 2}
+# app.config["Swagger"] = {"title": "Swagger-UI", "uiversion": 2}
 
-swagger_config = {
-    "headers": [],
-    "specs": [
-        {
-            "endpoint": "apispec_1",
-            "route": "/apispec_1.json",
-            "rule_filter": lambda rule: True,  # all in
-            "model_filter": lambda tag: True,  # all in
-        }
-    ],
-    "static_url_path": "/flasgger_static",
-    # "static_folder": "static",  # must be set by user
-    "swagger_ui": True,
-    "specs_route": "/swagger/",
-}
+# swagger_config = {
+#     "headers": [],
+#     "specs": [
+#         {
+#             "endpoint": "apispec_1",
+#             "route": "/apispec_1.json",
+#             "rule_filter": lambda rule: True,  # all in
+#             "model_filter": lambda tag: True,  # all in
+#         }
+#     ],
+#     "static_url_path": "/flasgger_static",
+#     # "static_folder": "static",  # must be set by user
+#     "swagger_ui": True,
+#     "specs_route": "/swagger/",
+# }
 
-template = dict(
-    swaggerUiPrefix=LazyString(lambda: request.environ.get("HTTP_X_SCRIPT_NAME", ""))
-)
+# template = dict(
+#     swaggerUiPrefix=LazyString(lambda: request.environ.get("HTTP_X_SCRIPT_NAME", "https://snapchatportal.herokuapp.com"))
+# )
 
-app.json_encoder = LazyJSONEncoder
-swagger = Swagger(app, config=swagger_config, template=template)
+# app.json_encoder = LazyJSONEncoder
+# swagger = Swagger(app, config=swagger_config, template=template)
 
 RECAPTCHA_ENABLED = True
 RECAPTCHA_SITE_KEY = os.environ.get('RECAPTCHA_SITE_KEY')
@@ -148,7 +148,7 @@ def index():
 
 
 @app.route('/login', methods=['POST'])
-@swag_from("swagger_config.yml")
+# @swag_from("swagger_config.yml")
 def login():
     users = mongo.db.users
 
