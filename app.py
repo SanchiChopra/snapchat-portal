@@ -40,8 +40,8 @@ except:
     db_link = os.environ.get('MONGO_URI')
     secret = os.environ.get('SECRET')
 
-client = pymongo.MongoClient('5000',
-            ssl=True)
+# client = pymongo.MongoClient('5000',
+            # ssl=True)
             # ssl_certfile='/path/to/client.pem',
             # ssl_keyfile='/path/to/key.pem' )
 
