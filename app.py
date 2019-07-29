@@ -40,11 +40,6 @@ except:
     db_link = os.environ.get('MONGO_URI')
     secret = os.environ.get('SECRET')
 
-# client = pymongo.MongoClient('5000',
-            # ssl=True)
-            # ssl_certfile='/path/to/client.pem',
-            # ssl_keyfile='/path/to/key.pem' )
-
 recaptcha = GoogleReCaptcha(app=app)
 
 
@@ -287,14 +282,6 @@ app.config['ENV'] = 'development'
 
 # app.config['TESTING'] = True
 
-
-#authorization header for other routes, type = bearer token and rest is body
-# UPLOAD:
-
-            # content_of_filter = File.read()
-            # records = pyexcel.iget_records(file_type=filename[-1], file_content=content)
-            # for record in records:
-            #     detailing= {"Username":record["Username"], "Password":record["Password"]}
 
 
 
