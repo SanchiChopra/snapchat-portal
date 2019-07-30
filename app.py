@@ -241,7 +241,7 @@ def upload():
     if 'filter' in request.files:
         filter = request.files['filter']
         mongo.save_file(filter.filename, filter)
-        mongo.db.users.insert({'username': request.form.get('email'), 'uploaded_filter_name' : filter.filename})
+        mongo.db.users.insert_one({'username': request.form.get('email'), 'uploaded_filter_name' : filter.filename})
 
     return 'Filter uploaded'
 
