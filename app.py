@@ -243,7 +243,7 @@ def upload():
         mongo.save_file(filter.filename, filter)
         mongo.db.users.insert_one({'username': request.form.get('email'), 'uploaded_filter_name' : filter.filename})
 
-    return 'Filter uploaded'
+    return jsonify({"msg": "Filter uploaded"}), 200
 
 
 @app.route('/file/<filename>')
