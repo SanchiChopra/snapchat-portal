@@ -31,8 +31,6 @@
                     }
                 }
             
-
-
         </style>
     </head>
 
@@ -42,27 +40,27 @@
                 <div class="heading">
                         <b>Filter Submission Portal</b>
                 </div>
-                <form method = "POST">
+                <form>
                     <div class="container">
                         <div class="row">
                             <div class="col-12">
-                                <input class="field input-width" type="text" placeholder="Email" name="email" maxlength="30" required>
+                                <input class="field input-width" type="text" id="logemail" placeholder="Email" name="email" maxlength="30" required>
                             </div>
                             <div class="col-12">
-                                <input class="field input-width" type="password" placeholder="Password" name="password" maxlength="30" required>
+                                <input class="field input-width" type="password" id="logpass" placeholder="Password" name="password" maxlength="30" required>
                             </div>
                             <div class="col-12 col-xs-12">
-                                    <input class="field input-width" type="button" value="LogIn">
+                                    <input id="log" class="field input-width" onload="checkCookie()" type="button" value="LogIn">
                             </div>
                             <div class="col-12 ">
                                 <a href="index2.html"><b><u>Don't have an account? Register</u></b></a>
                             </div>
                         </div>
                     </div>
-                    <div class="container ">
+                    <div class="container">
                         <div class="row">
                             <div class=" col-lg-6 col-md-6 col-sm-6 col-xs-12 dscvit">
-                                    <div class="container ">
+                                    <div class="container">
                                         <div class="row">
                                                 <div class="col-lg-8 col-md-8 col-sm-6 col-xs-3 logo">
                                                     <img src="images/dsc-logo.jpeg">
@@ -73,7 +71,7 @@
                                         </div>
                                     </div>
                             </div>
-                            <div class=" col-lg-6 col-md-6 col-sm-6 col-xs-12 snapchat ">
+                            <div class=" col-lg-6 col-md-6 col-sm-6 col-xs-12 snapchat">
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-md-3 col-sm-3 col-xs-3 logo">
@@ -84,11 +82,96 @@
                                             </div>
                                         </div>
                                     </div>
-                            </div>
+                            </div>  
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+        <script>
+
+            window.onload=function(){
+                document.getElementById("log").addEventListener("click", function(e) {
+                            var logemail=document.getElementById("logemail").value;  
+                            var logpass=document.getElementById("logpass").value;  
+
+
+
+                           
+                    fetch("https://snapchatportal.herokuapp.com/login", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                        email: logemail,
+                        password:logpass,
+                        }),
+                    })
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        // .then( res => {
+                        //     console.log(res)
+                        // })
+
+                        .then(res => {
+                        console.log("hii response", res)
+                        console.log("hi get token from here", res.token);
+                        sessionStorage.setItem("token", res.token)
+                        if (res.token) {
+                            window.location.href = "index3.html";
+                        } else {
+                            console.log("Getting error")
+                        }
+                    })
+                        .catch( err => {
+                            console.log(err)
+                        })
+                
+                });
+            }
+        </script> -->
+
+        <!-- STORING AND CHECKING FOR COOKIES -->
+        <script>
+        function setCookie(cname,cvalue,exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires=" + d.toGMTString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+        function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+        }
+
+        function checkCookie() {
+        var user=getCookie("username");
+        if (user != "") {
+            alert("Welcome again " + user);
+        } else {
+            user = prompt("Please enter your name:","");
+            if (user != "" && user != null) {
+            setCookie("username", user, 30);
+            }
+        }
+        }
+    </script>
     </body>
-    </html>
+</html>
