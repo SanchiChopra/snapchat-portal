@@ -43,8 +43,8 @@ except:
 recaptcha = GoogleReCaptcha(app=app)
 
 
-uploads_dir = os.path.join(app.instance_path,'uploads')
-os.makedirs(uploads_dir,0o777,exist_ok=True)
+# uploads_dir = os.path.join(app.instance_path,'uploads')
+# os.makedirs(uploads_dir,0o777,exist_ok=True)
 
 APP_URL = "https://snapchatportal.herokuapp.com/"
 
@@ -112,7 +112,7 @@ def register():
 
 @app.route('/')
 def index():
-    return redirect(url_for('login'))
+    return jsonify({"msg" : "hello"})
 
 
 @app.route('/login', methods=['POST'])
@@ -238,12 +238,17 @@ def protected():
 
 @app.route('/upload', methods = ['POST'])
 def upload():
-    if 'filter' in request.files:
+    if (request.files['filter']):
         filter = request.files['filter']
         mongo.save_file(filter.filename, filter)
         mongo.db.users.insert_one({'username': request.form.get('email'), 'uploaded_filter_name' : filter.filename})
-
-    return jsonify({"msg": "Filter uploaded"}), 200
+        print("success")
+        return jsonify({"msg": "Filter uploaded"}), 200
+    else:
+        print("error")
+        return jsonify({
+            "err" : "There was some error"
+        })
 
 
 @app.route('/file/<filename>')
@@ -251,13 +256,13 @@ def file(filename):
     return mongo.send_file(filename)
 
 
-@app.route('/filtersub/<username>')
-def filtersub(username):
-    user = mongo.db.users.find_one_or_404({ 'username' : username})
-    return f'''
-        <h1> {username} </h1>
-        <img src = "{url_for('file', filename = user['uploaded_filter_name'])}">
-    '''
+# @app.route('/filtersub/<username>')
+# def filtersub(username):
+#     user = mongo.db.users.find_one_or_404({ 'username' : username})
+#     return f'''
+#         <h1> {username} </h1>
+#         <img src = "{url_for('file', filename = user['uploaded_filter_name'])}">
+#     '''
 
 
 #<script src="https://www.google.com/recaptcha/api.js?render=6LedCasUAAAAAMwT3VYR39FQvwcw2zeKO5UiW2IS"></script>

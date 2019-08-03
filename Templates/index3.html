@@ -1,88 +1,165 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" defer>
-            <link rel="stylesheet" type="text/css" href="css/index.css">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-            <title>
-                Filter Upload
-            </title>
-            <style>
-                @media (max-width : 650px) {
-                    .input-width {
-                        min-width: 40%;
-                    }
-                    .logo,.dsclabel,.sclabel{
-                    text-align:center;
-                }
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"
+        defer>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
 
-                .dscvit{
-                    padding-bottom:5px;
-                }
-                
-                
-                }
-    
-            </style>
+    <title>
+        Filter Upload
+    </title>
+    <style>
+        @media (max-width : 650px) {
+            .input-width {
+                min-width: 40%;
+            }
 
-    </head>
-    <body>
-        <div class="content">
-            <div class="section3">
-                <div class="heading">
-                    <b>Upload your filter</b>
+            .logo,
+            .dsclabel,
+            .sclabel {
+                text-align: center;
+            }
+
+            .dscvit {
+                padding-bottom: 5px;
+            }
+
+
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="content">
+        <div class="section3">
+            <div class="heading">
+                <b>Upload your filter</b>
+            </div>
+            <form>
+                <div class="container">
+                    <div class="row">
+
+                            <form enctype="multipart/form-data" method="POST" action="http://localhost:5000/upload">
+
+                        <div class="col-12">
+
+                            <input name="filter" type="file" id="selectedFile" accept=".png" style="display: none;" />
+                            <input type="button" id="inputFileToLoad" class="newfield input-width" value="Choose Image"
+                                onclick="document.getElementById('selectedFile').click();" />
+                            <!-- <input type="file" multiple accept="image/png" style="display:none" >
+                                <button class="newfield input-width"  id="inputFileToLoad">Choose Image</button> -->
+                        </div>
+                        <div class="col-12">
+                            <textarea name="message" placeholder="Description" rows="10" cols="70">
+                                </textarea>
+                        </div>
+                        <div class="col-12">
+                            <input id="upl" type="submit" class="field input-width" value="Submit">
+                        </div>
+
+                        </form>
+                    </div>
                 </div>
-                <form>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12">
-                                <input type="submit" class="newfield input-width " value="Choose Image">
+                <div class="container ">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12  dscvit">
+                            <div class="container ">
+                                <div class="row">
+                                    <div class="col-lg-8 col-md-8 col-sm-6 col-xs-3 logo">
+                                        <img src="images/dsc-logo.jpeg">
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 dsclabel">
+                                        DSC <b>VIT</b>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-12">
-                                <textarea name="message" placeholder= "Description" rows="10" cols="70">
-                                </textarea>    
-                            </div>
-                            <div class="col-12">
-                                <input type="button" class="field input-width"  value="Submit">
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 snapchat">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-3 col-sm-3 col-xs-3 logo logo">
+                                        <img src="images/sc-logo.jpg">
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-6 sclabel">
+                                        <b>Snapchat</b>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="container ">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12  dscvit">
-                                        <div class="container ">
-                                            <div class="row">
-                                                    <div class="col-lg-8 col-md-8 col-sm-6 col-xs-3 logo">
-                                                        <img src="images/dsc-logo.jpeg">
-                                                    </div>
-                                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 dsclabel">
-                                                        DSC <b>VIT</b>
-                                                    </div>
-                                            </div>
-                                        </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 snapchat">
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-md-3 col-sm-3 col-xs-3 logo logo">
-                                                    <img src="images/sc-logo.jpg">
-                                                </div>
-                                                <div class="col-md-6 col-sm-6 col-xs-6 sclabel">
-                                                    <b>Snapchat</b>
-                                                </div>
-                                            </div>
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    
-                </form>
-            </div>
-        
+                </div>
+            </form>
         </div>
-    </body>
-</html>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        window.onload = function () {
+
+
+        //     document.getElementById("upl").addEventListener("click", function (e) {
+
+        //         let formData = new FormData();
+
+        //         var file1 = document.getElementById("selectedFile")
+
+        //         console.log(file1.files[0])
+
+        //         formData.append("filter", file1.files[0])
+
+        //         // console.log(formData)
+
+
+        //         fetch("http://localhost:5000/upload", {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'multipart/form-data',
+        //                 'Accept': 'application/json',
+        //             },
+        //             body: file1.files[0],
+        //         })
+        //             .then(function (response) {
+        //                 console.log(response)
+        //             })
+        //             // .then(res => {
+        //             //     console.log("Response", res)
+        //             // })
+        //             .catch(err => {
+        //                 console.log("Error", err)
+        //             })
+
+        //     });
+        // }
+
+            // function uploadPicture()
+            // {
+
+            //     var formData = new FormData();
+            //     var fileField = document.querySelector('input[type="file"]');
+            //     formData.append("file", $("#inputFileToLoad").files);
+            //     formData.append("language", "eng");
+            //     formData.append("filetype", "PNG");
+            //     callService(formData);                     
+            // }
+
+            // function callService(formData)
+            // {
+            //     fetch("http://snapchatportal.herokuapp.com/upload",{
+            //         data: formData,
+            //         method: 'PUT',
+            //         type: 'POST',
+
+            //     })
+            //     .then(response => response.json())
+            //     .catch(error => console.error('Error:', error))
+            //     .then(response => console.log('Success:', JSON.stringify(response)));
+            }   
+    </script>
+
+</body>
