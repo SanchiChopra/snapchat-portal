@@ -1,5 +1,5 @@
-    
 .env
+.env.py
 DB_NAME=student_db
 JWT_SECRET_KEY=pieapplepie
 MONGO_URI=mongodb+srv://test:test@cluster0-y1b2f.mongodb.net/test?retryWrites=true&w=majority
