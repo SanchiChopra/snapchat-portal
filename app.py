@@ -155,7 +155,6 @@ def login():
             dict_email = {
                 'email' : email 
                 }
-            tokens.insert_one(dict_token, dict_email)
         else:
             result = {'status': 404,
                         'message': 'wrong password'
