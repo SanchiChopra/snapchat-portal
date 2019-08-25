@@ -19,6 +19,7 @@ import os
 from flask_google_recaptcha import GoogleReCaptcha
 
 app = Flask(__name__)
+JSONSchemaValidator(app = app, root = "schemas")
 
 RECAPTCHA_ENABLED = True
 RECAPTCHA_SITE_KEY = os.environ.get('RECAPTCHA_SITE_KEY')
@@ -76,6 +77,10 @@ def register():
     users = mongo.db.users
     name = request.get_json()['name']
     email = request.get_json()['email']
+    response = users.find_one({"email" : email})
+    if response is not None:
+        return jsonify({"err":  "User already exists"})
+        
     password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
     # created = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
 
