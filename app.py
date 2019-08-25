@@ -65,6 +65,17 @@ REQ_FILE_TYPE = ['png']
 
 blacklist = set()
 
+def is_human(captcha_response):
+    """ Validating recaptcha response from google server
+        Returns True captcha test passed for submitted form else returns False.
+    """
+    secret = os.environ.get('RECAPTCHA_SECRET_KEY')
+    payload = {'response':captcha_response, 'secret':secret}
+    response = requests.post("https://www.google.com/recaptcha/api/siteverify", payload)
+    response_text = json.loads(response.text)
+    return response_text['success']
+
+
 @jwt.token_in_blacklist_loader
 def check_if_token_in_blacklist(decrypted_token):
     jti = decrypted_token['jti']
@@ -191,8 +202,12 @@ def logout2():
 @app.route('/upload', methods = ['POST'])
 def upload():
     #Authorization
+    captcha_response = request.form['g-captcha-response']
+    if not is_human(captcha_response):
+        return jsonify({"err": "captcha not recognised"})
     jwt_token = request.headers.get("Authorization")
     # try:
+
     user_data = decode_token(jwt_token)
     print(user_data)
     # except:
