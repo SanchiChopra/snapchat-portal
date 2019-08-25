@@ -118,23 +118,11 @@ def index():
 @app.route('/login', methods=['POST'])
 def login():
     users = mongo.db.users
-
-    # data = request.json()
-    # print(data)
     print(request.data)
 
     email = request.get_json()['email']
     password = request.get_json()['password']
     result = ""
-
-    
-    # data = {
-    #     'email':email,
-    #     'password': password
-    # }
-    # print(email)
-    # print(password)
-	
     response = users.find_one({"email" : email})
 
     if response:	
@@ -194,50 +182,14 @@ def logout2():
     blacklist.add(jti)
     return jsonify({"msg": "Successfully logged out"}), 200
 
-
-# To avoid users with blacklisted tokens from
-# accessing this endpoint
-@app.route('/protected', methods=['GET'])
-@jwt_required
-def protected():
-    return jsonify({'hello': 'world'})
-
-
-#To allow a logged-in user to upload a valid '.png' file
-# @app.route('/upload', methods=["POST"])
-# def upload():
-
-#     if (request.method =="POST"):
-
-        
-#         FileDetails = mongo.db.FileDetails
-#         File = request.files['UploadFile']
-        
-        
-#         if not File:
-#             return jsonify({"Error":"True", "ErrorType":"NoFile", "message":"File not uploaded!"})
-
-#         filename = File.filename
-#         filename = filename.split('.')
-
-#         if(filename[-1].lower() in REQ_FILE_TYPE):
-
-#             File = request.files['UploadFile']
-#             mongo.save_file(File.filename, File)
-
-#             FileDetails.insert_one({'username': request.form.get('email'), 'uploaded_filter_name' : File.filename, 'uploaded_filter' : File})
-#             File.seek(0)
-#             File.save(os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(File.filename)))
-#             return jsonify({"Error":"False", "ErrorType":"None", "message":"All records have been stored successfully on the database"})
-            
-#         else:
-
-#             return jsonify({"Error":"True", "ErrorType":"WrongExtension", "message":"Please upload a '.png' file"})
-
-
-
 @app.route('/upload', methods = ['POST'])
 def upload():
+    #Authorization
+    jwt_token = request.headers.get("Authorization")
+    try:
+        user_data = decode_token(jwt_token)
+    except:
+        return jsonify({"err": "You don't have access"})
     if (request.files['filter']):
         filter = request.files['filter']
         mongo.save_file(filter.filename, filter)
@@ -254,30 +206,6 @@ def upload():
 @app.route('/file/<filename>')
 def file(filename):
     return mongo.send_file(filename)
-
-
-# @app.route('/filtersub/<username>')
-# def filtersub(username):
-#     user = mongo.db.users.find_one_or_404({ 'username' : username})
-#     return f'''
-#         <h1> {username} </h1>
-#         <img src = "{url_for('file', filename = user['uploaded_filter_name'])}">
-#     '''
-
-
-#<script src="https://www.google.com/recaptcha/api.js?render=6LedCasUAAAAAMwT3VYR39FQvwcw2zeKO5UiW2IS"></script>
-@app.route("/submit", methods=["POST"])
-def submit():
-
-    if recaptcha.verify():
-        # SUCCESS
-        return "done"
-        #pass
-    else:
-        # FAILED
-        return "failed"
-        # pass
-
 
 if __name__ == '__main__':
     app.run(debug=True)

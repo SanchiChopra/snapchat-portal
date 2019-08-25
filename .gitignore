@@ -1,5 +1,11 @@
     
-env
+.env
+DB_NAME=student_db
+JWT_SECRET_KEY=pieapplepie
+MONGO_URI=mongodb+srv://test:test@cluster0-y1b2f.mongodb.net/test?retryWrites=true&w=majority
+RECAPTCHA_SECRET_KEY=6LdsyqsUAAAAAMs868yXwUDAHwFNag1RcMgk7QRo
+RECAPTCHA_SITE_KEY=6LdsyqsUAAAAANHzuzRYQqPRPt3JPJeu2zkANk1t
 .vscode
 __pycache__/
+
 *.pyc
