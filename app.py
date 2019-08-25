@@ -4,8 +4,7 @@ from bson.objectid import ObjectId
 from datetime import datetime
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
-from flask_jwt_extended import JWTManager
-from flask_jwt_extended import (create_access_token, create_refresh_token,JWTManager, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
+from flask_jwt_extended import (create_access_token, create_refresh_token,JWTManager, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt, decode_token)
 from flask_login import logout_user, LoginManager
 import flask_login
 import pymongo
@@ -156,7 +155,6 @@ def login():
             dict_email = {
                 'email' : email 
                 }
-            tokens.insert_one(dict_token, dict_email)
         else:
             result = {'status': 404,
                         'message': 'wrong password'
@@ -238,10 +236,18 @@ def protected():
 
 @app.route('/upload', methods = ['POST'])
 def upload():
+    # Authorization
+    jwt_token = request.headers.get("Authorization")
+    try:    
+        user_data = decode_token(jwt_token)
+    except:
+        return jsonify({"err": "You dont have access"})
+    if user_data.email is None:
+        return jsonify({"err": "You dont have access"})
     if (request.files['filter']):
         filter = request.files['filter']
         mongo.save_file(filter.filename, filter)
-        mongo.db.users.insert_one({'username': request.form.get('email'), 'uploaded_filter_name' : filter.filename})
+        mongo.db.users.insert_one({'username': user_data.email, 'uploaded_filter_name' : filter.filename})
         print("success")
         return jsonify({"msg": "Filter uploaded"}), 200
     else:
@@ -286,8 +292,3 @@ if __name__ == '__main__':
 app.config['ENV'] = 'development'
 
 # app.config['TESTING'] = True
-
-
-
-
-
