@@ -17,9 +17,16 @@ from wtforms.validators import InputRequired, Length, AnyOf
 from werkzeug.utils import secure_filename
 import os
 from flask_google_recaptcha import GoogleReCaptcha
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 app = Flask(__name__)
 JSONSchemaValidator(app = app, root = "schemas")
+limiter = Limiter(
+    app,
+    key_func=get_remote_address,
+    default_limits=["10 per day", "1 per minute"]
+)
 
 RECAPTCHA_ENABLED = True
 RECAPTCHA_SITE_KEY = os.environ.get('RECAPTCHA_SITE_KEY')
@@ -200,6 +207,7 @@ def logout2():
     return jsonify({"msg": "Successfully logged out"}), 200
 
 @app.route('/upload', methods = ['POST'])
+@limiter.limit("2 per hour")
 def upload():
     #Authorization
     captcha_response = request.form['g-captcha-response']
