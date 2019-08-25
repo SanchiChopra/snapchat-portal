@@ -4,8 +4,7 @@ from bson.objectid import ObjectId
 from datetime import datetime
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
-from flask_jwt_extended import JWTManager
-from flask_jwt_extended import (create_access_token, create_refresh_token,JWTManager, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt)
+from flask_jwt_extended import (create_access_token, create_refresh_token,JWTManager, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt, decode_token)
 from flask_login import logout_user, LoginManager
 import flask_login
 import pymongo
@@ -186,10 +185,11 @@ def logout2():
 def upload():
     #Authorization
     jwt_token = request.headers.get("Authorization")
-    try:
-        user_data = decode_token(jwt_token)
-    except:
-        return jsonify({"err": "You don't have access"})
+    # try:
+    user_data = decode_token(jwt_token)
+    print(user_data)
+    # except:
+    #     return jsonify({"err": "You don't have access"})
     if (request.files['filter']):
         filter = request.files['filter']
         mongo.save_file(filter.filename, filter)
