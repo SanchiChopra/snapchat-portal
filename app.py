@@ -143,7 +143,6 @@ def login():
             dict_email = {
                 'email' : email 
                 }
-            tokens.insert_one(dict_token, dict_email)
         else:
             result = {'status': 404,
                         'message': 'wrong password'
@@ -183,6 +182,7 @@ def logout2():
 
 @app.route('/upload', methods = ['POST'])
 def upload():
+<<<<<<< HEAD
     #Authorization
     jwt_token = request.headers.get("Authorization")
     # try:
@@ -190,10 +190,20 @@ def upload():
     print(user_data)
     # except:
     #     return jsonify({"err": "You don't have access"})
+=======
+    # Authorization
+    jwt_token = request.headers.get("Authorization")
+    try:    
+        user_data = decode_token(jwt_token)
+    except:
+        return jsonify({"err": "You dont have access"})
+    if user_data.email is None:
+        return jsonify({"err": "You dont have access"})
+>>>>>>> 2eca70e86ffe00609ec4a18c88158a27d1c31ea0
     if (request.files['filter']):
         filter = request.files['filter']
         mongo.save_file(filter.filename, filter)
-        mongo.db.users.insert_one({'username': request.form.get('email'), 'uploaded_filter_name' : filter.filename})
+        mongo.db.users.insert_one({'username': user_data.email, 'uploaded_filter_name' : filter.filename})
         print("success")
         return jsonify({"msg": "Filter uploaded"}), 200
     else:
@@ -214,8 +224,3 @@ if __name__ == '__main__':
 app.config['ENV'] = 'development'
 
 # app.config['TESTING'] = True
-
-
-
-
-
