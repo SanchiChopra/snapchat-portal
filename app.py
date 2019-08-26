@@ -3,6 +3,7 @@ from flask_jsonschema_validator import JSONSchemaValidator
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from datetime import datetime
+from flask_cors import CORS, cross_origin
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import (create_access_token, create_refresh_token,JWTManager, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt, decode_token)
 from flask_login import logout_user, LoginManager
@@ -90,6 +91,7 @@ def check_if_token_in_blacklist(decrypted_token):
 
 @app.route('/register', methods=['POST'])
 @app.validate( 'users', 'register' )
+@cross_origin()
 def register():
     users = mongo.db.users
     name = request.get_json()['name']
@@ -132,15 +134,15 @@ def register():
         "message": new_user["email"] + " registered"})
     
 
-
 @app.route('/')
+@cross_origin()
 def index():
     return redirect(url_for('login'))
     # return jsonify({"msg" : "hello"})
 
-
 @app.route('/login', methods=['POST'])
 @app.validate( 'users', 'login' )
+@cross_origin()
 def login():
     users = mongo.db.users
     print(request.data)
@@ -206,6 +208,7 @@ def logout2():
     blacklist.add(jti)
     return jsonify({"msg": "Successfully logged out"}), 200
 
+@CORS
 @app.route('/upload', methods = ['POST'])
 @limiter.limit("100 per hour")
 def upload():
