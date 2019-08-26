@@ -139,7 +139,7 @@ def index():
     # return jsonify({"msg" : "hello"})
 
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET','POST'])
 @app.validate( 'users', 'login' )
 def login():
     users = mongo.db.users
