@@ -3,7 +3,6 @@ from flask_jsonschema_validator import JSONSchemaValidator
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from datetime import datetime
-from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import (create_access_token, create_refresh_token,JWTManager, jwt_required, jwt_refresh_token_required, get_jwt_identity, get_raw_jwt, decode_token)
 from flask_login import logout_user, LoginManager
