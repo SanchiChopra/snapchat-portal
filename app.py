@@ -135,7 +135,8 @@ def register():
 
 @app.route('/')
 def index():
-    return jsonify({"msg" : "hello"})
+    return redirect(url_for('login'))
+    # return jsonify({"msg" : "hello"})
 
 
 @app.route('/login', methods=['POST'])
