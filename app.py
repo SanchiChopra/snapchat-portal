@@ -25,7 +25,7 @@ JSONSchemaValidator(app = app, root = "schemas")
 limiter = Limiter(
     app,
     key_func=get_remote_address,
-    default_limits=["10 per day", "1 per minute"]
+    default_limits=["1000 per day", "60 per minute"]
 )
 
 RECAPTCHA_ENABLED = True
@@ -207,7 +207,7 @@ def logout2():
     return jsonify({"msg": "Successfully logged out"}), 200
 
 @app.route('/upload', methods = ['POST'])
-@limiter.limit("2 per hour")
+@limiter.limit("100 per hour")
 def upload():
     #Authorization
     captcha_response = request.form['g-captcha-response']
