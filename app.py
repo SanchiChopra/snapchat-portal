@@ -125,8 +125,6 @@ def register():
     except:
         return jsonify({"message": "Something went wrong", "status": 500})
 
-    
-
     result = {"email" : new_user["email"] + " registered"}
 
     return jsonify({
@@ -208,9 +206,10 @@ def logout2():
     blacklist.add(jti)
     return jsonify({"msg": "Successfully logged out"}), 200
 
-@CORS
+# @CORS
 @app.route('/upload', methods = ['POST'])
 @limiter.limit("100 per hour")
+@cross_origin()
 def upload():
     #Authorization
     captcha_response = request.form['g-captcha-response']
