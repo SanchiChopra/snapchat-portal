@@ -102,7 +102,7 @@ def register():
         return jsonify({"err":  "User already exists"})
         
     password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
-    # created = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+   
 
     print(name, email, type(password))
     try:
@@ -110,7 +110,6 @@ def register():
             'name' : name, 
             'email' : email, 
             'password' : password, 
-            # 'created' : created, 
         }
         user_id = users.insert_one(new_user)
 
