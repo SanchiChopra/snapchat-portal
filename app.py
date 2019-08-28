@@ -235,7 +235,7 @@ def upload():
         #mongo.save_file(filter.filename, filter)
         filename = secure_filename(filter.filename)
         destination = "/".join([target, filename])
-        upload.save(destination)
+        request.files.getlist("filter")[0].save(destination)
         mongo.db.uploads.insert_one({'username': user_data['identity']['email'], 'uploaded_filter' : filename, 'description' : desc })
         print("success")
         
