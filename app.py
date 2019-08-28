@@ -14,11 +14,11 @@ from pymongo import MongoClient
 from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import StringField, PasswordField
 from wtforms.validators import InputRequired, Length, AnyOf
-from werkzeug.utils import secure_filename
 import os
 from flask_google_recaptcha import GoogleReCaptcha
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 CORS(app)
@@ -29,6 +29,7 @@ limiter = Limiter(
     default_limits=["1000 per day", "60 per minute"]
 )
 
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 RECAPTCHA_ENABLED = True
 RECAPTCHA_SITE_KEY = os.environ.get('RECAPTCHA_SITE_KEY')
 RECAPTCHA_SECRET_KEY = os.environ.get('RECAPTCHA_SECRET_KEY')
@@ -225,10 +226,16 @@ def upload():
     # except:
     #     return jsonify({"err": "You don't have access"})
     if (request.files['filter']):
+        target = os.path.join(APP_ROOT, 'face-images/')  #folder path
+        if not os.path.isdir(target):
+            os.mkdir(target)     # create folder if not exits
         filter = request.files['filter']
         desc = request.form['desc']
-        mongo.save_file(filter.filename, filter)
-        mongo.db.users.insert_one({'username': user_data['identity']['email'], 'uploaded_filter_name' : filter.filename, 'description' : desc })
+        #mongo.save_file(filter.filename, filter)
+        filename = secure_filename(filter.filename)
+        destination = "/".join([target, filename])
+        upload.save(destination)
+        mongo.db.users.insert_one({'username': user_data['identity']['email'], 'uploaded_filter' : filename, 'description' : desc })
         print("success")
         
 
