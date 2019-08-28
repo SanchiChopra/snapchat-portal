@@ -220,6 +220,8 @@ def upload():
 
     user_data = decode_token(jwt_token)
     print(user_data)
+    print("files content", request.files)
+
     # except:
     #     return jsonify({"err": "You don't have access"})
     if (request.files['filter']):
