@@ -227,9 +227,9 @@ def upload():
         mongo.save_file(filter.filename, filter)
         mongo.db.users.insert_one({'username': user_data['identity']['email'], 'uploaded_filter_name' : filter.filename})
         print("success")
-        desc = request.files('desc')
-        mongo.save_file(desc, desc)
-        mongo.db.users.insert_one({'description': desc})
+#         desc = request.files('desc')
+#         mongo.save_file(desc, desc)
+#         mongo.db.users.insert_one({'description': desc})
         return jsonify({"msg": "Filter uploaded"}), 200
     else:
         print("error")
