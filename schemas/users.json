@@ -15,5 +15,15 @@
       "password": { "type": "string", "minLength": 8, "maxLength": 32 }
     },
     "required": ["email", "password" ]
-	}
+  },
+   "upload": {
+     "type" : "object",
+     "properties": {
+       "filter": {"type": "binary"},
+       "desc": {"type": "string", "minLength": 10, "maxLength": 100}
+
+     },
+     "required": ["filter", "desc"]
+
+    }
 }
