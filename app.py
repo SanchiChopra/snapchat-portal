@@ -225,7 +225,7 @@ def upload():
     if (request.files['filter']):
         filter = request.files['filter']
         mongo.save_file(filter.filename, filter)
-        mongo.db.users.insert_one({'username': user_data.email, 'uploaded_filter_name' : filter.filename})
+        mongo.db.users.insert_one({'username': user_data.identity.email, 'uploaded_filter_name' : filter.filename})
         print("success")
         desc = request.files('desc')
         mongo.save_file(desc, desc)
