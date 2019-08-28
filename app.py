@@ -15,6 +15,7 @@ from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import StringField, PasswordField
 from wtforms.validators import InputRequired, Length, AnyOf
 import os
+
 from flask_google_recaptcha import GoogleReCaptcha
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -235,7 +236,7 @@ def upload():
         filename = secure_filename(filter.filename)
         destination = "/".join([target, filename])
         upload.save(destination)
-        mongo.db.users.insert_one({'username': user_data['identity']['email'], 'uploaded_filter' : filename, 'description' : desc })
+        mongo.db.uploads.insert_one({'username': user_data['identity']['email'], 'uploaded_filter' : filename, 'description' : desc })
         print("success")
         
 
