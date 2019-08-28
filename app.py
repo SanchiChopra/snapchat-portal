@@ -212,10 +212,10 @@ def logout2():
 # @cross_origin()
 def upload():
     #Authorization
-    captcha_response = request.form['g-captcha-response']
-    if not is_human(captcha_response):
-        return jsonify({"err": "captcha not recognised"})
-    jwt_token = request.headers.get("Authorization")
+    # captcha_response = request.form['g-captcha-response']
+    # if not is_human(captcha_response):
+    #    return jsonify({"err": "captcha not recognised"})
+    # jwt_token = request.headers.get("Authorization")
     # try:
 
     user_data = decode_token(jwt_token)
