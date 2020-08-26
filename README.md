@@ -1,3 +1,3 @@
 # snapchat-portal
 
-A simple API for login by an existing user and registration of a new user...
+A simple API made for use by Snapchat Extensive Filter Making Competition, for submission of creative filters designed by participating teams.
